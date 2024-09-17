@@ -30,7 +30,16 @@ const rodaExs = async () => {
     Ex3(exs, options);
     Ex4(exs, options);
     Ex5(exs, options);
-    
+    Ex6(exs, options);
+    Ex7(exs, options);
+    Ex8(exs, options);
+
+    };
+
+const postExs = (slug, resp, options, num) => {
+    const response = axios
+    .post(`https://tecweb-js.insper-comp.com.br/exercicio/${slug}`, {"resposta": `${resp}`}, options)
+    .then((response) => console.log(`Ex${num}: ${response.data.sucesso}`))
     };
 
 const Ex1 = (exs, options) => {
@@ -40,10 +49,9 @@ const Ex1 = (exs, options) => {
 
     let resp = entrada.reduce((a, b) => a + b, 0);
     
-    const response = axios
-      .post(`https://tecweb-js.insper-comp.com.br/exercicio/${slug}`, {"resposta": `${resp}`}, options)
-      .then((response) => console.log(`Ex1: ${response.data.sucesso}`))
-    };  
+    postExs(slug, resp, options, 1); 
+
+    }; 
 
 const Ex2 = (exs, options) => {
 
@@ -51,9 +59,7 @@ const Ex2 = (exs, options) => {
     const entrada = Object.values(exs[slug]["entrada"]);
 
     let resp = entrada[0].length;
-    const response = axios
-      .post(`https://tecweb-js.insper-comp.com.br/exercicio/${slug}`, {"resposta": `${resp}`}, options)
-      .then((response) => console.log(`Ex2: ${response.data.sucesso}`))
+    postExs(slug, resp, options, 2);
     };
 
 const Ex3 = (exs, options) => {
@@ -62,9 +68,7 @@ const Ex3 = (exs, options) => {
     const entrada = Object.values(exs[slug]["entrada"]);
 
     let resp = entrada[0].split("@")[0];
-    const response = axios
-    .post(`https://tecweb-js.insper-comp.com.br/exercicio/${slug}`, {"resposta": `${resp}`}, options)
-    .then((response) => console.log(`Ex3: ${response.data.sucesso}`))
+    postExs(slug, resp, options, 3);
     };
 
 const Ex4 = (exs, options) => {
@@ -85,10 +89,8 @@ const Ex4 = (exs, options) => {
         resp = 1;
     }
 
+    postExs(slug, resp, options, 4);
 
-    const response = axios
-    .post(`https://tecweb-js.insper-comp.com.br/exercicio/${slug}`, {"resposta": `${resp}`}, options)
-    .then((response) => console.log(`Ex4: ${response.data.sucesso}`))
     };
 
 const Ex5 = (exs, options) => {
@@ -108,17 +110,45 @@ const Ex5 = (exs, options) => {
         }
     }
 
-    console.log(slug);
-    console.log(ano);
-    console.log(resp);
+    // console.log(slug);
+    // console.log(exs[slug]);
+    // console.log(ano);
+    // console.log(resp);
 
-    url = `https://tecweb-js.insper-comp.com.br/exercicio/${slug}`;
-    console.log(url);
+    // url = `https://tecweb-js.insper-comp.com.br/exercicio/${slug}`;
+    // console.log(url);
 
-    const response = axios
-    .post(url, {"resposta": `${resp}`}, options)
-    .then((response) => console.log(`Ex5: ${response.data.sucesso}`))
+    postExs(slug, resp, options, 5);
     };
 
+const Ex6 = (exs, options) => {
+    const slug = Object.keys(exs)[5];
+    const entrada = Object.values(exs[slug]["entrada"]);
+
+    let resp = Math.round(Math.PI * (entrada[0]**2) * entrada[1]);
+
+    postExs(slug, resp, options, 6);
+    };
+
+const Ex7 = (exs, options) => {
+    const slug = Object.keys(exs)[6];
+    const entrada = Object.values(exs[slug]["entrada"]);
+
+    let s0 = entrada[0];
+    let v = entrada[1];
+    let t = entrada[2];
+    let resp = s0 + v*t;
+
+    postExs(slug, resp, options, 7);
+    };
+
+const Ex8 = (exs, options) => {
+    const slug = Object.keys(exs)[7];
+    const entrada = Object.values(exs[slug]["entrada"]);
+    
+    let resp = entrada[0].split("").reverse().join("");
+
+    postExs(slug, resp, options, 8);
+    };
     
 rodaExs();

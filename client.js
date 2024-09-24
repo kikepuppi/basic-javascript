@@ -50,6 +50,11 @@ const postExs = (slug, resp, options, num) => {
     .then((response) => console.log(`Ex${num}: ${response.data.sucesso}`))
     };
 
+const getResponse = async (url, options) => {
+    const response = await axios.get(url, options);
+    return response.data;
+    };
+
 const Ex1 = (exs, options) => {
 
     const slug = Object.keys(exs)[0];
@@ -294,11 +299,6 @@ const Ex14 = (exs, options) => {
     let resp = entrada[0].map((x) => x * 1).reduce((a,b) => a + b, 0);  
     
     postExs(slug, resp, options, 14);
-    };
-
-const getResponse = async (url, options) => {
-    const response = await axios.get(url, options);
-    return response.data;
     };
 
 const Ex15 = (exs, options) => {

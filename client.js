@@ -39,10 +39,6 @@ const rodaExs = async () => {
     Ex12(exs, options);
     Ex13(exs, options);
     Ex14(exs, options);
-
-    token = await getToken();
-    options = getOptions(token);
-
     Ex15(exs, options);
     Ex16(exs, options);
 
@@ -50,7 +46,7 @@ const rodaExs = async () => {
 
 const postExs = (slug, resp, options, num) => {
     const response = axios
-    .post(`https://tecweb-js.insper-comp.com.br/exercicio/${slug}`, {"resposta": `${resp}`}, options)
+    .post(`https://tecweb-js.insper-comp.com.br/exercicio/${slug}`, {"resposta": resp}, options)
     .then((response) => console.log(`Ex${num}: ${response.data.sucesso}`))
     };
 
@@ -305,17 +301,22 @@ const getResponse = async (url, options) => {
     return response.data;
     };
 
-const Ex15 = async (exs, options) => {
+const Ex15 = (exs, options) => {
     const slug = Object.keys(exs)[14];
     const entrada = Object.values(exs[slug]["entrada"]);
 
-    let resp = 0;
+    let resp_list = [];
 
     for (let i = 0; i < entrada[0].length; i++) {
-        resp += await getResponse(entrada[0][i], options);
+        resp_list.push(getResponse(entrada[0][i], options));
     }
 
-    postExs(slug, resp, options, 15);
+    Promise.all(resp_list).then((list) => { 
+        resp = list.reduce((a,b) => a + b, 0);
+        postExs(slug, resp, options, 15);
+     });
+
+    
     };
 
 const Ex16 = async (exs, options) => {
@@ -328,7 +329,6 @@ const Ex16 = async (exs, options) => {
     while (typeof resp === 'string') {
         resp = await getResponse(resp, options);
         console.log(resp);
-        console.log(typeof resp);
     }
     
     postExs(slug, resp, options, 16);
